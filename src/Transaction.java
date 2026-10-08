@@ -42,3 +42,4 @@ public class Transaction {
                 transactionId, amount, currency, originCountry, merchantCategory, isFlagged);
     }
 }
+

@@ -15,25 +15,23 @@ public class TransactionProcessor {
 
         Predicate<Transaction> isHighValue = t -> t.getAmount() > 10000.0;
         Predicate<Transaction> isHighRiskMerchant = t -> "GAMBLING".equalsIgnoreCase(t.getMerchantCategory());
-
-        // Chaining predicates using .or()
         Predicate<Transaction> fraudCheck = isHighValue.or(isHighRiskMerchant);
 
-        // 3. Function: Dynamic Fee Calculation
         Function<Transaction, Double> feeCalculator = t -> {
             if (t.isFlagged()) {
-                return 50.00; // Investigation fee for flagged transactions
+                return 50.00; // Investigation fee
             } else {
                 return t.getAmount() * 0.025; // 2.5% standard fee
             }
         };
 
-        // 4. Consumer: Audit Logging
         Consumer<Transaction> auditLogger = t -> {
             String network = router.route(t);
             double fee = feeCalculator.apply(t);
+            String status = t.isFlagged() ? "FLAGGED (SUSPICIOUS)" : "APPROVED";
 
 
-    };
-}
+        };
+
+    }
 }
